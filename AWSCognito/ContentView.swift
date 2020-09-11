@@ -9,8 +9,11 @@
 import SwiftUI
 import Amplify
 import AmplifyPlugins
+import Combine
 
 struct ContentView: View {
+    @State var todoSubscription: AnyCancellable?
+
     func doQuery() {
         let item = Todo(
             name: "Build iOS Application",
@@ -25,6 +28,16 @@ struct ContentView: View {
                 print("Could not save item to datastore: \(error)")
             }
         }
+    }
+    
+    func subscribeTodos() {
+       self.todoSubscription
+           = Amplify.DataStore.publisher(for: Todo.self)
+               .sink(receiveCompletion: { completion in
+                   print("Subscription has been completed: \(completion)")
+               }, receiveValue: { mutationEvent in
+                   print("Subscription got this value: \(mutationEvent)")
+               })
     }
     
     func getQuery() {
@@ -100,7 +113,7 @@ struct ContentView: View {
         VStack {
             Text("Hello, World!")
                 .onAppear(){
-                    self.doQuery()
+                    self.subscribeTodos()
             }
 //            Button(action: { self.doQuery() }){
 //                Text("Do query")
