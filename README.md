@@ -6,7 +6,7 @@ Configure Amplify and AWS cognito for IOS device
 pod install --repo-update
 ```
 
-2 - Open AWSCognito-Ampliy-IOS.xcworkspace in Xcode
+2 - Open the project in Xcode
 ```bash
 xed .
 ```
